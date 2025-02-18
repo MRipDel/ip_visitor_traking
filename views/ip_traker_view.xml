@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Formulario -->
+    <record id="view_ip_visitor_tracking_form" model="ir.ui.view">
+        <field name="name">ip.visitor.tracking.form</field>
+        <field name="model">ip.visitor.tracking</field>
+        <field name="arch" type="xml">
+            <form string="Seguimiento de Visitantes">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="get_visitor_location" 
+                                type="object" 
+                                string="Obtener Ubicación"
+                                class="oe_highlight"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="api_key" password="True"/>
+                            <field name="ip_address"/>
+                            <field name="country"/>
+                            <field name="city"/>
+                        </group>
+                        <group>
+                            <field name="longitude"/>
+                            <field name="latitude"/>
+                            <field name="isp"/>
+                            <field name="organization"/>
+                            <field name="visit_time"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista Árbol -->
+    <record id="view_ip_visitor_tracking_tree" model="ir.ui.view">
+        <field name="name">ip.visitor.tracking.tree</field>
+        <field name="model">ip.visitor.tracking</field>
+        <field name="arch" type="xml">
+            <tree string="Seguimiento de Visitantes">
+                <field name="ip_address"/>
+                <field name="country"/>
+                <field name="city"/>
+                <field name="isp"/>
+                <field name="visit_time"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Búsqueda -->
+    <record id="view_ip_visitor_tracking_search" model="ir.ui.view">
+        <field name="name">ip.visitor.tracking.search</field>
+        <field name="model">ip.visitor.tracking</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Seguimiento de Visitantes">
+                <field name="ip_address"/>
+                <field name="country"/>
+                <field name="city"/>
+                <field name="isp"/>
+                <separator/>
+                <filter string="Hoy" name="today" domain="[('visit_time', '>=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter string="País" name="country" context="{'group_by': 'country'}"/>
+                    <filter string="Proveedor de Servicios" name="isp" context="{'group_by': 'isp'}"/>
+                    <filter string="Fecha de Visita" name="visit_date" context="{'group_by': 'visit_time:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Ventana de Acción -->
+    <record id="action_ip_visitor_tracking" model="ir.actions.act_window">
+        <field name="name">Seguimiento de Visitantes IP</field>
+        <field name="res_model">ip.visitor.tracking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_ip_visitor_tracking_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No se encontraron registros de seguimiento de visitantes.
+            </p>
+            <p>
+                Haga clic en 'Crear' para añadir un nuevo registro y use el botón 'Obtener Ubicación' para obtener la información del visitante.
+            </p>
+        </field>
+    </record>
+
+    <!-- Elementos del Menú -->
+    <menuitem id="menu_ip_visitor_tracking_root"
+              name="Seguimiento de Visitantes"
+              sequence="20"
+              web_icon="ip_visitor_tracking,static/description/icon.png"/>
+
+    <menuitem id="menu_ip_visitor_tracking_main"
+              name="Visitantes"
+              parent="menu_ip_visitor_tracking_root"
+              action="action_ip_visitor_tracking"
+              sequence="10"/>
+</odoo>
