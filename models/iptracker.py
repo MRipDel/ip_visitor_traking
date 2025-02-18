@@ -9,7 +9,7 @@ class IPVisitorTracking(models.Model):
     _description = 'IP Visitor Tracking'
     _rec_name = 'ip_address'
 
-    api_key = fields.Char(string='API Key', required=True, help='API Key from ipgeolocation.io')
+    api_key = fields.Char(string='API Key', required=True, help='API Key from ipgeolocation.io', default='e2c8e173cbc94e87a433c89818df6afa')
     ip_address = fields.Char(string='IP Address', readonly=True)
     country = fields.Char(string='Country', readonly=True)
     city = fields.Char(string='City', readonly=True)
